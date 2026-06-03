@@ -1,13 +1,14 @@
 public class UserTask
 {
     public int Id {get; private set;}
+    public int UserId {get; private set;}
+    public User User { get; private set; } = null!;
     public string Label {get; private set;} = string.Empty;
     public string? Description {get; private set;}
     public DateTimeOffset? Deadline {get; private set;}
     public DateTimeOffset? Reminder {get; private set;}
     public RepeatState RepeatState {get; private set;} = RepeatState.NoRepeat;
     public bool IsCompleted {get; private set;} = false;
-
     public int? CategoryId {get; private set;}
     public Category? Category {get; private set;}
 
@@ -36,10 +37,9 @@ public class UserTask
 
     public void SetDescription(string? description)
     {
-        if (description != null)
-            Description = Validator.RequiredString(description, nameof(Description));
-
-        Description = null;
+        Description = description != null 
+            ? Validator.RequiredString(description, nameof(Description))
+            : null;
     }
 
     public void SetDeadline(DateTimeOffset? deadline)
