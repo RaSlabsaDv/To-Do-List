@@ -8,6 +8,9 @@ public class User
     private List<UserTask> _userTasks = new ();
     public IReadOnlyCollection<UserTask> Tasks => _userTasks;
 
+    private List<Category> _categories = new ();
+    public IReadOnlyCollection<Category> Categories => _categories;
+
     private User (){}
 
     public User(string name, string passwordHash, string email)
