@@ -106,4 +106,16 @@ public class UserTaskService
 
         await repository.DeleteAsync(id);
     }
+
+    public async Task CompleteAsync(int id)
+    {
+        var task = await repository.GetByIdAsync(id);
+
+        if(task == null)
+            throw new NotFoundException($"Task {id} not found");
+
+        task.Complete();    
+
+        await repository.UpdateAsync(task);
+    }
 }

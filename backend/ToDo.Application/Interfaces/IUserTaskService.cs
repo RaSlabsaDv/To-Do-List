@@ -5,4 +5,5 @@ public interface IUserTaskService
     Task<IEnumerable<UserTaskDto>> GetByUserIdAsync(int userId);
     Task UpdateAsync(int id, UpdateUserTaskDto updateDto);
     Task DeleteAsync(int id);
+    Task CompleteAsync(int id);
 }
