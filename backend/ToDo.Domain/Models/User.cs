@@ -15,10 +15,19 @@ public class User
 
     public User(string name, string passwordHash, string email)
     {
-        Name = Validator.RequiredString(name, nameof(Name));
-        PasswordHash = Validator.RequiredString(passwordHash, nameof(PasswordHash));
-        Email = Validator.RequiredString(email, nameof(Email));
+        SetName(name);
+        SetPasswordHash(passwordHash);
+        SetEmail(email);
     }
+
+    public void SetName(string name) => 
+        Name = Validator.RequiredString(name, nameof(Name));
+
+    public void SetPasswordHash(string passwordHash) =>
+        PasswordHash = Validator.RequiredString(passwordHash, nameof(PasswordHash));
+
+    public void SetEmail(string email) =>
+        Email = Validator.RequiredString(email, nameof(Email));
 
     public void AddTask(UserTask userTask)
     {
