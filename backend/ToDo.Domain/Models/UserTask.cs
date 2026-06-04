@@ -20,13 +20,12 @@ public class UserTask
         DateTimeOffset? deadline,
         DateTimeOffset? reminder,
         RepeatState repeatState,
-        Category category,
+        Category? category = null,
         string? description = null,
         bool isCompleted = false
     )
     {
-        Label = Validator.RequiredString(label, nameof(Label));
-        
+        SetLabel(label);
         SetDeadline(deadline);
         SetReminder(reminder);
         SetRepeatState(repeatState);
@@ -34,6 +33,9 @@ public class UserTask
         SetDescription(description);
         IsCompleted = isCompleted;
     }
+
+    public void SetLabel(string label) =>
+        Label = Validator.RequiredString(label, nameof(Label));
 
     public void SetDescription(string? description)
     {
