@@ -58,4 +58,15 @@ public class UserService(IUserRepository repository, IPasswordHasher passwordHas
         
         await repository.DeleteAsync(id);
     }
+
+    public async Task<User?> LoginAsync(LoginDto dto)
+    {
+        var user = await repository.GetByEmailAsync(dto.Email);
+
+        if(user == null) return null;
+
+        var isValid = passwordHasher.Verify(dto.Password, user.PasswordHash);
+
+        return isValid ? user : null;
+    }
 }

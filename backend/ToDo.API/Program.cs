@@ -7,9 +7,18 @@ builder.Services.AddProblemDetails();
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication();
 
+builder.Services.AddControllers();
+builder.Services.AddAuth(builder.Configuration);
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
 var app = builder.Build();
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.UseExceptionHandler(err => err.Run(async context =>
 {
@@ -24,5 +33,10 @@ app.UseExceptionHandler(err => err.Run(async context =>
     context.Response.StatusCode = status;
     await context.Response.WriteAsJsonAsync(new { error = message });
 }));
+
+app.MapControllers();
+
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.Run();

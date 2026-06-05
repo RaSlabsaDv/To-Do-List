@@ -5,4 +5,5 @@ public interface IUserService
     Task<UserDto> GetByEmailAsync(string email);
     Task UpdateAsync(int id, UpdateUserDto updateDto);
     Task DeleteAsync(int id);
+    Task<User?> LoginAsync(LoginDto dto); 
 }
