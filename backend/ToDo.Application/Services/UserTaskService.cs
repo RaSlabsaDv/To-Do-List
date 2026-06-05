@@ -4,7 +4,7 @@ public class UserTaskService
     ICategoryRepository categoryRepository
 ) : IUserTaskService
 {
-    public async Task CreateAsync(CreateUserTaskDto dto)
+    public async Task CreateAsync(CreateUserTaskDto dto, int userId)
     {
         Category? category = null;
 
@@ -15,6 +15,7 @@ public class UserTaskService
 
         var task = new UserTask
         (
+            userId,
             dto.Label,
             dto.Deadline,
             dto.Reminder,

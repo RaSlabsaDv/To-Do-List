@@ -16,6 +16,7 @@ public class UserTask
 
     public UserTask
     (
+        int userId,
         string label, 
         DateTimeOffset? deadline,
         DateTimeOffset? reminder,
@@ -25,6 +26,7 @@ public class UserTask
         bool isCompleted = false
     )
     {
+        UserId = userId;
         SetLabel(label);
         SetDeadline(deadline);
         SetReminder(reminder);
