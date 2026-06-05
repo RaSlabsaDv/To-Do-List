@@ -1,8 +1,8 @@
 public class CategoryService(ICategoryRepository repository) : ICategoryService
 {
-    public async Task CreateAsync(CreateCategoryDto dto)
+    public async Task CreateAsync(CreateCategoryDto dto, int userId)
     {
-        var category = new Category(dto.Name, dto.UserId);
+        var category = new Category(dto.Name, userId);
         await repository.CreateAsync(category);
     }
 
@@ -24,12 +24,12 @@ public class CategoryService(ICategoryRepository repository) : ICategoryService
         return response;
     }
 
-    public async Task UpdateAsync(UpdateCategoryDto updateDto)
+    public async Task UpdateAsync(int id, UpdateCategoryDto updateDto)
     {
-        var category = await repository.GetByIdAsync(updateDto.Id);
+        var category = await repository.GetByIdAsync(id);
 
         if(category == null)
-            throw new NotFoundException($"Category {updateDto.Id} not found");
+            throw new NotFoundException($"Category {id} not found");
 
         category.SetName(updateDto.Name);
 

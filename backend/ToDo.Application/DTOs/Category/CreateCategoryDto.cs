@@ -1,1 +1,1 @@
-public record CreateCategoryDto(string Name, int UserId);
+public record CreateCategoryDto(string Name);

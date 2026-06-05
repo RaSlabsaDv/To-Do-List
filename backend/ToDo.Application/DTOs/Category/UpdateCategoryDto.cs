@@ -1,1 +1,1 @@
-public record UpdateCategoryDto(int Id, string Name);
+public record UpdateCategoryDto(string Name);
