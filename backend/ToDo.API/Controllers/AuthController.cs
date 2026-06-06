@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
@@ -28,9 +29,20 @@ public class AuthController(IUserService userService, IJwtService jwtService) : 
     }
 
     [HttpPost("logout")]
+    [Authorize]
     public IActionResult Logout()
     {
         Response.Cookies.Delete("token"); 
         return Ok();
+    }
+
+    [HttpGet("me")]
+    [Authorize]
+    public IActionResult Me()
+    {
+        var userId = int.Parse(User.FindFirst("userId")!.Value);
+        var email = User.FindFirst("email")!.Value;
+
+        return Ok(new { userId, email });
     }
 }
