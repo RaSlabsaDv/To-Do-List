@@ -10,12 +10,20 @@ builder.Services.AddApplication();
 builder.Services.AddControllers();
 builder.Services.AddAuth(builder.Configuration);
 
+builder.Services.AddCors(opt => opt.AddPolicy("angular", policy =>
+    policy.WithOrigins("http://localhost:4200")
+          .AllowAnyMethod()
+          .AllowAnyHeader()
+          .AllowCredentials())); 
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
 app.UseHttpsRedirection();
+
+app.UseCors("angular");
 
 app.UseAuthentication();
 app.UseAuthorization();

@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -41,8 +42,7 @@ public class AuthController(IUserService userService, IJwtService jwtService) : 
     public IActionResult Me()
     {
         var userId = int.Parse(User.FindFirst("userId")!.Value);
-        var email = User.FindFirst("email")!.Value;
-
-        return Ok(new { userId, email });
+        var email = User.FindFirst(ClaimTypes.Email)!.Value;
+        return Ok(new { userId, email});
     }
 }

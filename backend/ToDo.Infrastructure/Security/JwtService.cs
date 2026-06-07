@@ -11,7 +11,7 @@ public class JwtService(IConfiguration configuration) : IJwtService
         var claims = new[]
         {
             new Claim("userId", user.Id.ToString()),
-            new Claim("email", user.Email)
+            new Claim(ClaimTypes.Email, user.Email)
         };
 
         var key = new SymmetricSecurityKey(
