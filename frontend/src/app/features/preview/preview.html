@@ -1,0 +1,54 @@
+<div class="min-h-screen flex flex-col items-center bg-[#0c110e] text-emerald-50">
+    <div class="text-center mt-12">
+        <h1 class="text-3xl">Твої задачі - під <span class="text-green-400">твоїм</span> контролем</h1>
+        <p class="text-gray-500 mt-2">Простий спосіб організувати день</p>
+    </div>
+
+    <div class="flex flex-col mt-8 items-center text-lg w-full max-w-md mb-8 gap-4">
+            <div class="flex items-center w-full gap-3 p-3 bg-[#111a14] border-2 border-[#1a2e22] rounded-lg">
+                <input type="checkbox" checked disabled class=
+                "
+                    appearance-none w-5 h-5 rounded border-2 cursor-not-allowed
+                    bg-green-900 border-green-900 disabled:opacity-100
+                    after:content-['✓'] after:text-black after:font-bold after:text-xs
+                    flex items-center justify-center
+                ">
+                <div>
+                    <span class="line-through text-gray-500">Купити продукти</span>
+                    <p class="text-gray-500 text-xs">до 11:00</p>
+                </div>
+                <span class="ml-auto bg-green-900 text-gray-500 p-1 rounded-2xl text-sm">Особисте</span>
+            </div>
+
+            <div class="flex items-center w-full gap-3 p-3 bg-[#111a14] border-2 border-[#1a2e22] rounded-lg">
+                <input type="checkbox" disabled class=
+                "
+                    appearance-none w-5 h-5 rounded border-2 cursor-not-allowed
+                    border-green-900 disabled:opacity-100
+                    after:content-[''] after:text-black after:font-bold after:text-xs
+                    flex items-center justify-center
+                ">
+                <div>
+                    <span class="">Сходити в зал</span>
+                    <p class="text-green-400 text-xs">до 18:00</p>
+                </div>
+                <span class="ml-auto bg-green-900 text-green-400 p-1 rounded-2xl text-sm">Спорт</span>
+            </div>
+
+            <div class="flex items-center w-full gap-3 p-3 bg-[#111a14] border-2 border-[#1a2e22] rounded-lg">
+                <input type="checkbox" disabled class=
+                "
+                    appearance-none w-5 h-5 rounded border-2 cursor-not-allowed
+                    border-green-900 disabled:opacity-100
+                    after:content-[''] after:text-black after:font-bold after:text-xs
+                    flex items-center justify-center
+                ">
+                <div>
+                    <span class="">Підготувати розповідь</span>
+                </div>
+                <span class="ml-auto bg-green-900 text-green-400 p-1 rounded-2xl text-sm">Навчання</span>
+            </div>
+        </div>
+
+        <button routerLink="/login" class="cursor-pointer bg-green-900 text-green-400 p-3 w-70 rounded-2xl hover:bg-green-800">Розпочати безкоштовно</button>
+</div>
