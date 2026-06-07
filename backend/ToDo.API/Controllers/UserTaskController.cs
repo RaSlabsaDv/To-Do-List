@@ -49,4 +49,11 @@ public class UserTaskController(IUserTaskService service) : ControllerBase
         await service.CompleteAsync(id);
         return NoContent();
     }
+
+    [HttpPatch("{id}/uncomplete")]
+    public async Task<IActionResult> Uncomplete(int id)
+    {
+        await service.UncompleteAsync(id);
+        return NoContent();
+    }
 }

@@ -67,8 +67,6 @@ public class UserTask
         CategoryId = category?.Id;
     }
 
-    public void Complete()
-    {
-        IsCompleted = true;
-    }
+    public void Complete() => IsCompleted = true;
+    public void Uncomplete() => IsCompleted = false;
 }

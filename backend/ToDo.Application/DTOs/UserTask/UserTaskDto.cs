@@ -7,5 +7,5 @@ public record UserTaskDto
     DateTimeOffset? Reminder,
     RepeatState RepeatState,
     bool IsCompleted,
-    int? CategoryId
+    CategoryDto? Category
 );

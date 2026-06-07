@@ -6,4 +6,5 @@ public interface IUserTaskService
     Task UpdateAsync(int id, UpdateUserTaskDto updateDto);
     Task DeleteAsync(int id);
     Task CompleteAsync(int id);
+    Task UncompleteAsync(int id);
 }

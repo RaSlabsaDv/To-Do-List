@@ -16,6 +16,7 @@ public class UserTaskRepository(ToDoContext context) : IUserTaskRepository
     public async Task<IEnumerable<UserTask>> GetByUserIdAsync(int userId)
     {
         return await context.UserTasks
+            .Include(ut => ut.Category)
             .Where(ut => ut.UserId == userId)
             .ToListAsync();
     }

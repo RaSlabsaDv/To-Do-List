@@ -43,7 +43,7 @@ public class UserTaskService
             task.Reminder,
             task.RepeatState,
             task.IsCompleted,
-            task.CategoryId
+            task.Category != null ? new CategoryDto(task.Category.Id, task.Category.Name) : null
         );
     }
 
@@ -58,7 +58,7 @@ public class UserTaskService
             t.Reminder,
             t.RepeatState,
             t.IsCompleted,
-            t.CategoryId
+            t.Category != null ? new CategoryDto(t.Category.Id, t.Category.Name) : null
         ));
 
         return response;
@@ -116,6 +116,18 @@ public class UserTaskService
             throw new NotFoundException($"Task {id} not found");
 
         task.Complete();    
+
+        await repository.UpdateAsync(task);
+    }
+
+    public async Task UncompleteAsync(int id)
+    {
+        var task = await repository.GetByIdAsync(id);
+
+        if(task == null)
+            throw new NotFoundException($"Task {id} not found");
+
+        task.Uncomplete();    
 
         await repository.UpdateAsync(task);
     }
