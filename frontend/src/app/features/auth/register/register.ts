@@ -1,24 +1,40 @@
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, inject } from '@angular/core';
+import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
+import { validate } from '@angular/forms/signals';
 
 @Component({
   selector: 'app-register',
-  imports: [FormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './register.html',
 })
 export class Register {
-  constructor(private router : Router, private authService : AuthService ){}
+  constructor
+  (
+    private router : Router, 
+    private authService : AuthService,
+  ){}
 
-  username : string = '';
-  email : string = '';
-  password : string = '';
+  private fb = inject(FormBuilder);
+
+  submitted = false;
+
+  form = this.fb.group({
+    name: ['', [Validators.required, Validators.minLength(1)]],
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.required, Validators.minLength(6)]]
+  })
 
   register(){
-    this.authService.register({ name: this.username, email: this.email, password: this.password })
+    this.submitted = true;
+    if (this.form.invalid) return;
+
+    const { name, email, password } = this.form.value;
+
+    this.authService.register({ name: name!, email: email!, password: password! })
       .subscribe(() =>{
-        this.authService.login({ email: this.email, password: this.password }).subscribe(() =>{
+        this.authService.login({ email: email!, password: password! }).subscribe(() =>{
           this.router.navigate(['/tasks'])
         })
       })

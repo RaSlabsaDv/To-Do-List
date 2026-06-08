@@ -5,21 +5,31 @@
 
         <div class="flex flex-col gap-3 w-full">
             <div class="flex flex-col gap-1">
-            <label class="text-xs text-gray-500">Email</label>
-            <input [(ngModel)]="email" type="email" placeholder="email@gmail.com"
-                class="bg-[#0c110e] border border-[#1a2e22] rounded-lg px-3 py-2 text-emerald-50 text-sm outline-none w-full"/>
-        </div>
+                <label class="text-xs text-gray-500">Email</label>
+                <input [formControl]="form.controls.email" type="email" placeholder="email@gmail.com"
+                    class="bg-[#0c110e] border border-[#1a2e22] rounded-lg px-3 py-2 text-emerald-50 text-sm outline-none w-full"/>
+                @if (form.controls.email.invalid && submitted) {
+                    <p class="text-red-400 text-xs">пошта обов'язкова</p>
+                }
+            </div>
 
         <div class="flex flex-col gap-1">
             <label class="text-xs text-gray-500">Пароль</label>
-            <input [(ngModel)]="password" type="password" placeholder="••••••••"
+            <input [formControl]="form.controls.password" type="password" placeholder="••••••••"
                 class="bg-[#0c110e] border border-[#1a2e22] rounded-lg px-3 py-2 text-emerald-50 text-sm outline-none w-full"/>
+            @if (form.controls.password.invalid && submitted) {
+                <p class="text-red-400 text-xs">мінімум 6 символів</p>
+            }
         </div>
     </div>
 
         <button (click)="login()" class="w-full bg-green-900 text-green-400 rounded-lg py-2.5 font-medium cursor-pointer hover:bg-green-800">
             Увійти
         </button>
+
+        @if (errorMessage()) {
+            <p class="text-red-400 text-xs text-center">{{ errorMessage() }}</p>
+        }
 
         <p class="text-xs text-gray-500">
             Немає акаунту? 
