@@ -17,6 +17,10 @@ export class Register {
 
   register(){
     this.authService.register({ name: this.username, email: this.email, password: this.password })
-      .subscribe(() => this.router.navigate(['/tasks']))
+      .subscribe(() =>{
+        this.authService.login({ email: this.email, password: this.password }).subscribe(() =>{
+          this.router.navigate(['/tasks'])
+        })
+      })
   }
 }
