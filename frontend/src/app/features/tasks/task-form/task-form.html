@@ -1,0 +1,49 @@
+<div class="flex flex-col gap-4">
+  <div class="flex flex-col gap-1">
+    <label class="text-xs text-gray-500">Назва</label>
+    <input [(ngModel)]="label" class="bg-[#0c110e] border border-[#1a2e22] rounded-lg px-3 py-2 text-emerald-50 text-sm outline-none"/>
+  </div>
+
+  <div class="flex flex-col gap-1">
+    <label class="text-xs text-gray-500">Опис</label>
+    <input [(ngModel)]="description" class="bg-[#0c110e] border border-[#1a2e22] rounded-lg px-3 py-2 text-emerald-50 text-sm outline-none"/>
+  </div>
+
+  <div class="flex flex-col gap-1">
+    <label class="text-xs text-gray-500">Дедлайн</label>
+    <input [(ngModel)]="deadline" type="datetime-local" class="bg-[#0c110e] border border-[#1a2e22] rounded-lg px-3 py-2 text-emerald-50 text-sm outline-none"/>
+  </div>
+
+  <div class="flex flex-col gap-1">
+    <label class="text-xs text-gray-500">Нагадування</label>
+    <input [(ngModel)]="reminder" type="datetime-local" class="bg-[#0c110e] border border-[#1a2e22] rounded-lg px-3 py-2 text-emerald-50 text-sm outline-none"/>
+  </div>
+
+  <div class="flex flex-col gap-1">
+  <label class="text-xs text-gray-500">Повторення</label>
+  <select [(ngModel)]="repeatState" class="bg-[#0c110e] border border-[#1a2e22] rounded-lg px-3 py-2 text-emerald-50 text-sm outline-none">
+    <option [ngValue]="0">Без повторення</option>
+    <option [ngValue]="1">Щодня</option>
+    <option [ngValue]="2">По будням</option>
+    <option [ngValue]="3">Щотижня</option>
+    <option [ngValue]="4">Щомісяця</option>
+    <option [ngValue]="5">Щороку</option>
+  </select>
+</div>
+
+  <div class="flex flex-col gap-1">
+    <label class="text-xs text-gray-500">Категорія</label>
+    <select [(ngModel)]="categoryId" class="bg-[#0c110e] border border-[#1a2e22] rounded-lg px-3 py-2 text-emerald-50 text-sm outline-none">
+      <option [ngValue]="null">Без категорії</option>
+
+      @for (cat of categories; track cat.id) {
+        <option [ngValue]="cat.id">{{ cat.name }}</option>
+      }
+    </select>
+</div>
+
+  <div class="flex gap-2 mt-2">
+    <button (click)="onSave()" class="bg-green-900 text-green-400 px-4 py-2 rounded-lg cursor-pointer flex-1">Зберегти</button>
+    <button (click)="cancel.emit()" class="bg-[#1a2e22] text-gray-400 px-4 py-2 rounded-lg cursor-pointer flex-1">Скасувати</button>
+  </div>
+</div>

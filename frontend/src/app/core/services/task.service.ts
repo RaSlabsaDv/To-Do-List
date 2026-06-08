@@ -32,4 +32,8 @@ export class TaskService{
     complete(id : number) : Observable<void>{
         return this.http.patch<void>(`${this.api}/${id}/complete`, {});
     }
+
+    uncomplete(id : number) : Observable<void>{
+        return this.http.patch<void>(`${this.api}/${id}/uncomplete`, {});
+    }
 }

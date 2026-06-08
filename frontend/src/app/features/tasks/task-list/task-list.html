@@ -1,0 +1,127 @@
+<div class="flex bg-[#111a14] h-full">
+  <div class="w-48 border-r border-[#1a2e22] shrink-0">
+    <app-task-filter
+      [categories]="categories()"
+      [selectedCategoryId]="selectedCategoryId()"
+      (categorySelected)="selectedCategoryId.set($event)"
+      (createCategory)="showCreateCategoryModal = true"
+      (editCategory)="onEditCategory($event)"
+      (deleteCategory)="onDeleteCategory($event)"
+    />
+  </div>
+
+  <div class="flex flex-col flex-1 overflow-hidden">
+    
+    <!-- Пошук + кнопка -->
+    <div class="flex px-8 pt-6 pb-4 gap-4">
+      <input 
+        [ngModel]="searchQuery()"
+        (ngModelChange)="searchQuery.set($event)"
+        placeholder="Пошук..."
+        class="bg-[#0c110e] border border-[#1a2e22] rounded-lg px-3 py-2 text-emerald-50 text-sm outline-none w-full"
+      />
+      <button (click)="showCreateDrawer = true" class="px-4 text-sm whitespace-nowrap bg-green-900 text-green-400 rounded-lg font-medium cursor-pointer hover:bg-green-800">
+        + Новий таск
+      </button>
+    </div>
+
+    <!-- Список тасків зі скролом -->
+    <div class="flex-1 overflow-y-auto px-8 flex flex-col gap-2">
+      @for (task of paginatedTasks(); track task.id) {
+        <app-task-card
+          [task]="task"
+          (complete)="onComplete(task.id, task.isCompleted)"
+          (edit)="onEdit(task)"
+          (delete)="onDelete(task.id)"
+        />
+      }
+    </div>
+
+    <!-- Пагінація завжди внизу -->
+    <div class="flex justify-center gap-2 py-4 border-t border-[#1a2e22]">
+      <button (click)="currentPage.update(p => p - 1)" [disabled]="currentPage() === 1"
+        class="bg-[#111a14] border border-[#1a2e22] text-gray-400 px-3 py-1 rounded-lg cursor-pointer disabled:opacity-50">
+        ←
+      </button>
+
+      @for (page of pages(); track page) {
+        <button (click)="currentPage.set(page)"
+          class="px-3 py-1 rounded-lg cursor-pointer"
+          [class]="currentPage() === page ? 'bg-green-900 text-green-400' : 'bg-[#111a14] border border-[#1a2e22] text-gray-400'">
+          {{ page }}
+        </button>
+      }
+
+      <button (click)="currentPage.update(p => p + 1)" [disabled]="currentPage() === totalPages()"
+        class="bg-[#111a14] border border-[#1a2e22] text-gray-400 px-3 py-1 rounded-lg cursor-pointer disabled:opacity-50">
+        →
+      </button>
+    </div>
+  </div>
+
+  @if (showCreateDrawer) {
+    <app-drawer (close)="showCreateDrawer = false">
+      <h2 class="text-emerald-50 text-lg font-medium">Новий таск</h2>
+      <app-task-form
+        [categories]="categories()"
+        (create)="confirmCreate($event)"
+        (cancel)="showCreateDrawer = false"
+      />
+    </app-drawer>
+  }
+
+  @if (showEditDrawer && selectedTask) {
+    <app-drawer (close)="showEditDrawer = false">
+      <h2 class="text-emerald-50 text-lg font-medium">Редагування</h2>
+      <app-task-form
+        [categories]="categories()"
+        [task]="selectedTask"
+        (save)="confirmEdit($event)"
+        (cancel)="showEditDrawer = false"
+      />
+    </app-drawer>
+  }
+
+  @if (showDeleteModal) {
+    <app-modal (close)="showDeleteModal = false">
+      <p class="text-emerald-50 mb-4">Видалити таск?</p>
+      <div class="flex gap-2">
+        <button (click)="confirmDelete()" class="bg-red-900 text-red-400 px-4 py-2 rounded-lg cursor-pointer flex-1">Видалити</button>
+        <button (click)="showDeleteModal = false" class="bg-[#1a2e22] text-gray-400 px-4 py-2 rounded-lg cursor-pointer flex-1">Скасувати</button>
+      </div>
+    </app-modal>
+  }
+
+  @if (showEditCategoryModal && selectedCategory) {
+    <app-modal (close)="showEditCategoryModal = false">
+      <h2 class="text-emerald-50 mb-4">Редагувати категорію</h2>
+      <input [(ngModel)]="editCategoryName" class="bg-[#0c110e] border border-[#1a2e22] rounded-lg px-3 py-2 text-emerald-50 text-sm outline-none w-full mb-4"/>
+      <div class="flex gap-2">
+        <button (click)="confirmEditCategory()" class="bg-green-900 text-green-400 px-4 py-2 rounded-lg cursor-pointer flex-1">Зберегти</button>
+        <button (click)="showEditCategoryModal = false" class="bg-[#1a2e22] text-gray-400 px-4 py-2 rounded-lg cursor-pointer flex-1">Скасувати</button>
+      </div>
+    </app-modal>
+  }
+
+  @if (showDeleteCategoryModal) {
+    <app-modal (close)="showDeleteCategoryModal = false">
+      <p class="text-emerald-50 mb-4">Видалити категорію?</p>
+      <div class="flex gap-2">
+        <button (click)="confirmDeleteCategory()" class="bg-red-900 text-red-400 px-4 py-2 rounded-lg cursor-pointer flex-1">Видалити</button>
+        <button (click)="showDeleteCategoryModal = false" class="bg-[#1a2e22] text-gray-400 px-4 py-2 rounded-lg cursor-pointer flex-1">Скасувати</button>
+      </div>
+    </app-modal>
+  }
+
+  @if (showCreateCategoryModal) {
+    <app-modal (close)="showCreateCategoryModal = false">
+      <h2 class="text-emerald-50 mb-4">Нова категорія</h2>
+      <input [(ngModel)]="newCategoryName" placeholder="Назва категорії"
+        class="bg-[#0c110e] border border-[#1a2e22] rounded-lg px-3 py-2 text-emerald-50 text-sm outline-none w-full mb-4"/>
+      <div class="flex gap-2">
+        <button (click)="confirmCreateCategory()" class="bg-green-900 text-green-400 px-4 py-2 rounded-lg cursor-pointer flex-1">Створити</button>
+        <button (click)="showCreateCategoryModal = false" class="bg-[#1a2e22] text-gray-400 px-4 py-2 rounded-lg cursor-pointer flex-1">Скасувати</button>
+      </div>
+    </app-modal>
+  }
+</div>

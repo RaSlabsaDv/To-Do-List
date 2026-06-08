@@ -1,0 +1,54 @@
+<nav class="flex items-center justify-between bg-[#0c110e] px-5 py-4 border-b border-[#1a2e22]">
+  <div class="flex items-center gap-3">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="text-green-400" viewBox="0 0 16 16">
+      <path d="M1.4 1.7c.216.289.65.84 1.725 1.274 1.093.44 2.884.774 5.834.528l.37-.023c1.823-.06 3.117.598 3.956 1.579C14.16 6.082 14.5 7.41 14.5 8.5c0 .58-.032 1.285-.229 1.997q.198.248.382.54c.756 1.2 1.19 2.563 1.348 3.966a1 1 0 0 1-1.98.198c-.13-.97-.397-1.913-.868-2.77C12.173 13.386 10.565 14 8 14c-1.854 0-3.32-.544-4.45-1.435-1.125-.887-1.89-2.095-2.391-3.383C.16 6.62.16 3.646.509 1.902L.73.806z"/>
+    </svg>
+    <span class="text-emerald-50 text-lg font-medium">Taskly</span>
+  </div>
+
+  <div class="flex items-center gap-3 cursor-pointer" (click)="openProfile()">
+    <div class="w-8 h-8 rounded-full bg-green-900 flex items-center justify-center">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="text-green-400" viewBox="0 0 16 16">
+        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+        <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+      </svg>
+    </div>
+  </div>
+</nav>
+
+@if (showProfileDrawer) {
+  <app-drawer (close)="showProfileDrawer = false">
+    <h2 class="text-emerald-50 text-lg font-medium mb-4">Профіль</h2>
+
+    <div class="flex flex-col gap-3 h-full">
+      <div class="flex flex-col gap-1">
+        <label class="text-xs text-gray-500">Ім'я</label>
+        <input [(ngModel)]="name" class="bg-[#0c110e] border border-[#1a2e22] rounded-lg px-3 py-2 text-emerald-50 text-sm outline-none"/>
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <label class="text-xs text-gray-500">Email</label>
+        <input [(ngModel)]="email" type="email" class="bg-[#0c110e] border border-[#1a2e22] rounded-lg px-3 py-2 text-emerald-50 text-sm outline-none"/>
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <label class="text-xs text-gray-500">Новий пароль</label>
+        <input [(ngModel)]="password" type="password" placeholder="••••••••" class="bg-[#0c110e] border border-[#1a2e22] rounded-lg px-3 py-2 text-emerald-50 text-sm outline-none"/>
+      </div>
+
+      <div class="flex gap-2 mt-2">
+        <button (click)="saveProfile()" class="bg-green-900 text-green-400 px-4 py-2 rounded-lg cursor-pointer flex-1">Зберегти</button>
+        <button (click)="showProfileDrawer = false" class="bg-[#1a2e22] text-gray-400 px-4 py-2 rounded-lg cursor-pointer flex-1">Скасувати</button>
+      </div>
+
+      <div class="mt-auto flex flex-col gap-2">
+      <button (click)="logout()" class="text-red-400 text-sm cursor-pointer hover:text-red-300">
+        Вийти з акаунту
+      </button>
+      <button (click)="deleteAccount()" class="text-sm text-red-400 border border-red-900 px-4 py-2 rounded-lg cursor-pointer hover:bg-red-900">
+        Видалити акаунт
+      </button>
+    </div>
+    </div>
+  </app-drawer>
+}

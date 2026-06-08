@@ -1,3 +1,5 @@
+import { Category } from "./category.model";
+
 export interface Task{
     id: number,
     label: string,
@@ -6,7 +8,7 @@ export interface Task{
     reminder? : string,
     repeatState : RepeatState,
     isCompleted : boolean,
-    categoryId? : number
+    category?: Category;
 }
 
 export interface CreateTaskDto{
