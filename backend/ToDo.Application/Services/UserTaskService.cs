@@ -17,8 +17,8 @@ public class UserTaskService
         (
             userId,
             dto.Label,
-            dto.Deadline,
-            dto.Reminder,
+            dto.Deadline?.ToUniversalTime(),
+            dto.Reminder?.ToUniversalTime(),
             dto.RepeatState,
             category,
             dto.Description

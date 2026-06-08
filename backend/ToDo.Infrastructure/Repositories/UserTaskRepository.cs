@@ -10,7 +10,9 @@ public class UserTaskRepository(ToDoContext context) : IUserTaskRepository
 
     public async Task<UserTask?> GetByIdAsync(int id)
     {
-        return await context.UserTasks.FindAsync(id);
+        return await context.UserTasks
+            .Include(t => t.Category)
+            .FirstOrDefaultAsync(t => t.Id == id);
     }
 
     public async Task<IEnumerable<UserTask>> GetByUserIdAsync(int userId)
