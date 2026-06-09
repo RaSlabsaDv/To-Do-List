@@ -35,6 +35,7 @@ app.UseExceptionHandler(err => err.Run(async context =>
     var (status, message) = exception switch
     {
         NotFoundException => (StatusCodes.Status404NotFound, exception.Message),
+        ConflictException => (StatusCodes.Status409Conflict, exception.Message),
         _ => (StatusCodes.Status500InternalServerError, "Internal server error")
     };
 

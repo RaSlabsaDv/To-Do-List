@@ -57,6 +57,8 @@ export class TaskList{
   selectedCategory : Category | null = null;
   editCategoryName : string = ''
 
+  categoryNameError = signal('');
+
   showDeleteCategoryModal = false;
 
   showCreateDrawer = false;
@@ -140,7 +142,12 @@ export class TaskList{
   }
 
   confirmCreateCategory(){
-    if(!this.newCategoryName.trim()) return;
+    if(!this.editCategoryName.trim() || !this.selectedCategoryForAction){
+      this.categoryNameError.set('Назва обов\'язкова');
+      return;
+    } 
+
+    this.categoryNameError.set('');
 
     this.categoryService.create({ name: this.newCategoryName }).subscribe(() => {
       this.categoryService.getByUser().subscribe(cats => {
@@ -153,13 +160,18 @@ export class TaskList{
 
   onEditCategory(category: Category) {
     this.selectedCategory = category;
-    this.selectedCategoryForAction = category.id;  // ← додати
-    this.editCategoryName = category.name;          // ← додати
+    this.selectedCategoryForAction = category.id; 
+    this.editCategoryName = category.name;
     this.showEditCategoryModal = true;
   }
 
   confirmEditCategory(){
-    if(!this.editCategoryName.trim() || !this.selectedCategoryForAction) return;
+    if(!this.editCategoryName.trim() || !this.selectedCategoryForAction){
+      this.categoryNameError.set('Назва обов\'язкова');
+      return;
+    } 
+
+    this.categoryNameError.set('');
 
     this.categoryService.update(this.selectedCategoryForAction, { name: this.editCategoryName }).subscribe(() =>{
       this.categoryService.getByUser().subscribe(cats => {

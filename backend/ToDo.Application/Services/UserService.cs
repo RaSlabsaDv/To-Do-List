@@ -2,6 +2,10 @@ public class UserService(IUserRepository repository, IPasswordHasher passwordHas
 {
     public async Task CreateAsync(CreateUserDto dto)
     {
+        var existing = await repository.GetByEmailAsync(dto.Email);
+        if (existing != null)
+            throw new ConflictException("User with this email already exists");
+
         var hash = passwordHasher.Hash(dto.Password);
         var user = new User(dto.Name, hash, dto.Email);
 

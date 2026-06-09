@@ -1,8 +1,7 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
-import { validate } from '@angular/forms/signals';
 
 @Component({
   selector: 'app-register',
@@ -19,6 +18,7 @@ export class Register {
   private fb = inject(FormBuilder);
 
   submitted = false;
+  errorMessage = signal('');
 
   form = this.fb.group({
     name: ['', [Validators.required, Validators.minLength(1)]],
@@ -33,10 +33,16 @@ export class Register {
     const { name, email, password } = this.form.value;
 
     this.authService.register({ name: name!, email: email!, password: password! })
-      .subscribe(() =>{
-        this.authService.login({ email: email!, password: password! }).subscribe(() =>{
-          this.router.navigate(['/tasks'])
-        })
+      .subscribe({
+        next: () => {
+          this.authService.login({ email: email!, password: password! }).subscribe(() =>{
+            this.router.navigate(['/tasks'])
+          })
+        },
+        error: (err) => {
+          if (err.status === 409) this.errorMessage.set('Користувач з таким email вже існує');
+          else this.errorMessage.set('Щось пішло не так');
+        }
       })
   }
 }
