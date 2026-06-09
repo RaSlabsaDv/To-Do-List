@@ -1,11 +1,11 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { CreateTaskDto, RepeatState, Task, UpdateTaskDto } from '../../../core/models/task.model';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Category } from '../../../core/models/category.model';
 
 @Component({
   selector: 'app-task-form',
-  imports: [FormsModule],
+  imports: [ReactiveFormsModule, FormsModule],
   templateUrl: './task-form.html',
 })
 export class TaskForm {
@@ -15,6 +15,14 @@ export class TaskForm {
   @Output() create = new EventEmitter<CreateTaskDto>()
   @Output() save = new EventEmitter<UpdateTaskDto>();
   @Output() cancel = new EventEmitter<void>();
+
+  private fb = inject(FormBuilder)
+
+  submitted = false;
+
+  form = this.fb.group({
+    label: ['', [Validators.required, Validators.minLength(2)]],
+  })
 
   label : string = '';
   description? : string;
@@ -26,7 +34,7 @@ export class TaskForm {
 
   ngOnInit() {
     if (this.task) {
-      this.label = this.task.label;
+      this.form.patchValue({ label: this.task.label });
       this.description = this.task.description;
       this.deadline = this.task.deadline;
       this.reminder = this.task.reminder;
@@ -37,10 +45,11 @@ export class TaskForm {
   }
 
   onSave() {
-     console.log('categoryId type', typeof this.categoryId);
+    const label = this.form.value.label!;
+
     if (this.task) {
       this.save.emit({
-        label: this.label,
+        label: label,
         description: this.description,
         deadline: this.deadline,
         reminder: this.reminder,
@@ -49,7 +58,7 @@ export class TaskForm {
       });
     } else {
       this.create.emit({
-        label: this.label,
+        label: label,
         description: this.description,
         deadline: this.deadline,
         reminder: this.reminder,

@@ -1,7 +1,7 @@
 <div class="flex flex-col gap-4">
   <div class="flex flex-col gap-1">
     <label class="text-xs text-gray-500">Назва</label>
-    <input [(ngModel)]="label" class="bg-[#0c110e] border border-[#1a2e22] rounded-lg px-3 py-2 text-emerald-50 text-sm outline-none"/>
+    <input [formControl]="form.controls.label" class="bg-[#0c110e] border border-[#1a2e22] rounded-lg px-3 py-2 text-emerald-50 text-sm outline-none"/>
   </div>
 
   <div class="flex flex-col gap-1">

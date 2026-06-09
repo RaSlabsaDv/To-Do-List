@@ -1,7 +1,7 @@
 // navbar.ts
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../../core/services/auth.service';
 import { UserService } from '../../../core/services/user.service';
 import { DrawerComponent } from '../drawer/drawer.component';
@@ -10,7 +10,7 @@ import { User } from '../../../core/models/user.model';
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [DrawerComponent, FormsModule],
+  imports: [DrawerComponent, ReactiveFormsModule],
   templateUrl: './navbar.html'
 })
 export class Navbar {
@@ -20,30 +20,36 @@ export class Navbar {
     private router: Router
   ) {}
 
+  private fb = inject(FormBuilder)
+
+  form = this.fb.group({
+    name: ['', [Validators.minLength(2)]],
+    email: ['', [Validators.email]],
+    password: ['', [Validators.minLength(6)]]
+  })
+
   showProfileDrawer = false;
   user = signal<User | null>(null);
-  name = signal<string>('');
-  email = '';
-  password = '';
 
   ngOnInit() {
-  const currentUrl = this.router.url;
-  if (currentUrl === '/login' || currentUrl === '/register' || currentUrl === '/') return;
+    const currentUrl = this.router.url;
+    if (currentUrl === '/login' || currentUrl === '/register' || currentUrl === '/') return;
 
-  this.userService.getById().subscribe(u => {
-    this.user.set(u);
-    this.name.set(u.name);
-    this.email = u.email;
-  });
-}
+    this.userService.getById().subscribe(u => {
+      this.user.set(u);
+      this.form.patchValue({ name: u.name });
+      this.form.patchValue({ email: u.email });
+    });
+  }
+
   openProfile() {
-  this.showProfileDrawer = true;
-  this.userService.getById().subscribe(u => {
-    this.user.set(u);
-    this.name.set(u.name);
-    this.email = u.email;
-  });
-}
+    this.showProfileDrawer = true;
+    this.userService.getById().subscribe(u => {
+      this.user.set(u);
+      this.form.patchValue({ name: u.name });
+      this.form.patchValue({ email: u.email });
+    });
+  }
 
   logout() {
     this.showProfileDrawer = false;
@@ -53,11 +59,15 @@ export class Navbar {
   }
 
   saveProfile() {
+    if(this.form.invalid) return;
+
+    const { name, email, password } = this.form.value
+
     this.showProfileDrawer = false;
     this.userService.update({
-      name: this.name() || undefined,
-      email: this.email || undefined,
-      password: this.password || undefined
+      name: name || undefined,
+      email: email || undefined,
+      password: password || undefined
     }).subscribe()
   }
 

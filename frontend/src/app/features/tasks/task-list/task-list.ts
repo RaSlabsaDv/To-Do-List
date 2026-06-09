@@ -24,6 +24,15 @@ export class TaskList{
   currentPage = signal<number>(1);
   pageSize = 5;
 
+  filteredTasks = computed(() => {
+    const catId = this.selectedCategoryId();
+    const query = this.searchQuery().toLowerCase();
+    
+    return this.tasks()
+      .filter(t => !catId || t.category?.id === catId)
+      .filter(t => !query || t.label.toLowerCase().includes(query));
+  });
+
   totalPages = computed(() =>{
     return Math.ceil(this.filteredTasks().length / this.pageSize);
   });
@@ -125,15 +134,6 @@ export class TaskList{
       this.selectedTaskId = null;
     });
   }
-
-  filteredTasks = computed(() => {
-    const catId = this.selectedCategoryId();
-    const query = this.searchQuery().toLowerCase();
-    
-    return this.tasks()
-      .filter(t => !catId || t.category?.id === catId)
-      .filter(t => !query || t.label.toLowerCase().includes(query));
-  });
 
   onCreateCategory(){
     this.showCreateCategoryModal = true;

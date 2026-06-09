@@ -23,17 +23,17 @@
     <div class="flex flex-col gap-3 h-full">
       <div class="flex flex-col gap-1">
         <label class="text-xs text-gray-500">Ім'я</label>
-        <input [(ngModel)]="name" class="bg-[#0c110e] border border-[#1a2e22] rounded-lg px-3 py-2 text-emerald-50 text-sm outline-none"/>
+        <input [formControl]="form.controls.name" class="bg-[#0c110e] border border-[#1a2e22] rounded-lg px-3 py-2 text-emerald-50 text-sm outline-none"/>
       </div>
 
       <div class="flex flex-col gap-1">
         <label class="text-xs text-gray-500">Email</label>
-        <input [(ngModel)]="email" type="email" class="bg-[#0c110e] border border-[#1a2e22] rounded-lg px-3 py-2 text-emerald-50 text-sm outline-none"/>
+        <input [formControl]="form.controls.email" type="email" class="bg-[#0c110e] border border-[#1a2e22] rounded-lg px-3 py-2 text-emerald-50 text-sm outline-none"/>
       </div>
 
       <div class="flex flex-col gap-1">
         <label class="text-xs text-gray-500">Новий пароль</label>
-        <input [(ngModel)]="password" type="password" placeholder="••••••••" class="bg-[#0c110e] border border-[#1a2e22] rounded-lg px-3 py-2 text-emerald-50 text-sm outline-none"/>
+        <input [formControl]="form.controls.password" type="password" placeholder="••••••••" class="bg-[#0c110e] border border-[#1a2e22] rounded-lg px-3 py-2 text-emerald-50 text-sm outline-none"/>
       </div>
 
       <div class="flex gap-2 mt-2">
