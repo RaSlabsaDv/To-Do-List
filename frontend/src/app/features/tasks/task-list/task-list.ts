@@ -142,7 +142,7 @@ export class TaskList{
   }
 
   confirmCreateCategory(){
-    if(!this.editCategoryName.trim() || !this.selectedCategoryForAction){
+    if(!this.newCategoryName.trim()){
       this.categoryNameError.set('Назва обов\'язкова');
       return;
     } 
